@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji-Treppe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen text-gray-200 p-4">
+
+    <div class="bg-gray-800 p-8 rounded-xl shadow-lg w-full max-w-lg">
+        <h1 class="text-3xl font-bold text-center mb-6 text-gray-100">Emoji-Treppe</h1>
+        
+        <div class="mb-6">
+            <label for="heightInput" class="block text-gray-400 mb-2">Treppenhöhe (1-99):</label>
+            <input type="number" id="heightInput" min="1" max="99" value="10" 
+                   class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-gray-200 
+                          focus:outline-none focus:border-blue-500 transition duration-300">
+        </div>
+
+        <button id="generateBtn" 
+                class="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold 
+                       hover:bg-blue-700 transition duration-300 transform 
+                       hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            Treppe bauen
+        </button>
+
+        <div id="staircase-container" class="mt-8 overflow-auto max-h-[70vh]">
+            <!-- Treppe wird hier gerendert -->
+        </div>
+
+    </div>
+
+    <script>
+        // Function to create the emoji staircase
+        function createStaircase(height) {
+            const container = document.getElementById('staircase-container');
+            container.innerHTML = ''; // Clear previous staircase
+            
+            // Syntaxfehler behoben: Das Array hatte einen fehlenden Abschluss
+            const emojis = ['2️⃣', '🙂', '🙃', '🤕'];
+            const numEmojis = emojis.length;
+
+            if (height < 1 || height > 99) {
+                container.innerHTML = `<p class="text-red-400 text-center">Bitte gib eine Zahl zwischen 1 und 99 ein.</p>`;
+                return;
+            }
+
+            for (let i = height - 1; i >= 0; i--) {
+                const row = document.createElement('div');
+                row.className = 'flex items-center justify-end';
+
+                for (let j = 0; j <= i; j++) {
+                    const emojiIndex = (height - 1 - i + j) % numEmojis;
+                    const emoji = emojis[emojiIndex];
+                    
+                    const cell = document.createElement('div');
+                    cell.className = 'w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-2xl md:text-3xl rounded-md transition duration-300 transform';
+                    cell.textContent = emoji;
+
+                    // Random rotation for a playful effect
+                    const rotation = (Math.random() - 0.5) * 10;
+                    cell.style.transform = `rotate(${rotation}deg)`;
+
+                    row.appendChild(cell);
+                }
+                container.appendChild(row);
+            }
+        }
+
+        // Event listener for the button
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            const inputElement = document.getElementById('heightInput');
+            const height = parseInt(inputElement.value, 10);
+            createStaircase(height);
+        });
+
+        // Initial staircase creation on page load
+        window.onload = () => {
+            const inputElement = document.getElementById('heightInput');
+            createStaircase(parseInt(inputElement.value, 10));
+        };
+    </script>
+</body>
+</html>
+
