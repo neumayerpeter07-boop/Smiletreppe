@@ -47,6 +47,9 @@
                 container.innerHTML = `<p class="text-red-400 text-center">Bitte gib eine Zahl zwischen 1 und 99 ein.</p>`;
                 return;
             }
+            
+            // Emojis für den Pfad, die abwechseln sollen
+            const pathEmojis = ['🙃', '🙂'];
 
             // Schleife für die Treppe, die von unten nach oben wächst
             for (let i = 1; i <= height; i++) {
@@ -60,11 +63,13 @@
                     // Bestimmt das Emoji basierend auf der Position
                     if (j === i) { // Es ist das Emoji auf dem eigentlichen Treppenpfad
                         if (i === height) {
-                            currentEmoji = '🤕'; // Die oberste Stufe
+                            currentEmoji = '🙂'; // Die oberste Stufe
                         } else if (i === 1) {
-                            currentEmoji = '🙂'; // Die unterste Stufe
+                            currentEmoji = '🤕'; // Die unterste Stufe
                         } else {
-                            currentEmoji = '🙃'; // Alle anderen Stufen auf dem Pfad
+                            // Abwechselndes Emoji für die Stufen dazwischen
+                            const emojiIndex = (i - 2) % pathEmojis.length;
+                            currentEmoji = pathEmojis[emojiIndex];
                         }
                     } else { // Es ist ein Fundament-Emoji
                         currentEmoji = '2️⃣';
