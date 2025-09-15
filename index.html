@@ -43,28 +43,39 @@
             const container = document.getElementById('staircase-container');
             container.innerHTML = ''; // Vorherige Treppe löschen
             
-            const emojis = ['🙂', '2️⃣', '🙃', '🤕'];
-            const numEmojis = emojis.length;
-
             if (height < 1 || height > 99) {
                 container.innerHTML = `<p class="text-red-400 text-center">Bitte gib eine Zahl zwischen 1 und 99 ein.</p>`;
                 return;
             }
 
-            for (let i = height - 1; i >= 0; i--) {
+            // Schleife für die Treppe, die von unten nach oben wächst
+            for (let i = 1; i <= height; i++) {
                 const row = document.createElement('div');
-                row.className = 'flex items-center justify-end';
+                row.className = 'flex items-center justify-start';
 
-                for (let j = 0; j <= i; j++) {
-                    const emojiIndex = (height - 1 - i + j) % numEmojis;
-                    const emoji = emojis[emojiIndex];
-                    
+                // Füllt die Zeile mit der korrekten Anzahl an Emojis
+                for (let j = 1; j <= i; j++) {
+                    let currentEmoji;
+
+                    // Bestimmt das Emoji basierend auf der Position
+                    if (j === i) { // Es ist das Emoji auf dem eigentlichen Treppenpfad
+                        if (i === height) {
+                            currentEmoji = '🙂'; // Die oberste Stufe
+                        } else if (i === 1) {
+                            currentEmoji = '🤕'; // Die unterste Stufe
+                        } else {
+                            currentEmoji = '🙃'; // Alle anderen Stufen auf dem Pfad
+                        }
+                    } else { // Es ist ein Fundament-Emoji
+                        currentEmoji = '2️⃣';
+                    }
+
                     const cell = document.createElement('div');
                     cell.className = 'w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-2xl md:text-3xl rounded-md transition duration-300 transform';
-                    cell.textContent = emoji;
+                    cell.textContent = currentEmoji;
 
                     // Zufällige Drehung für einen spielerischen Effekt
-                    const rotation = (Math.random() - 0.5) * 20; // Zwischen -10 und +10 Grad
+                    const rotation = (Math.random() - 0.5) * 20;
                     cell.style.transform = `rotate(${rotation}deg)`;
 
                     row.appendChild(cell);
