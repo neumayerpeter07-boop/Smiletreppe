@@ -38,13 +38,12 @@
     </div>
 
     <script>
-        // Function to create the emoji staircase
+        // Funktion zum Erstellen der Emoji-Treppe
         function createStaircase(height) {
             const container = document.getElementById('staircase-container');
-            container.innerHTML = ''; // Clear previous staircase
+            container.innerHTML = ''; // Vorherige Treppe löschen
             
-            // Syntaxfehler behoben: Das Array hatte einen fehlenden Abschluss
-            const emojis = ['2️⃣', '🙂', '🙃', '🤕'];
+            const emojis = ['🙂', '2️⃣', '🙃', '🤕'];
             const numEmojis = emojis.length;
 
             if (height < 1 || height > 99) {
@@ -64,5 +63,28 @@
                     cell.className = 'w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-2xl md:text-3xl rounded-md transition duration-300 transform';
                     cell.textContent = emoji;
 
-                    // Random rotation for a playful effect
-                    const rotation =
+                    // Zufällige Drehung für einen spielerischen Effekt
+                    const rotation = (Math.random() - 0.5) * 20; // Zwischen -10 und +10 Grad
+                    cell.style.transform = `rotate(${rotation}deg)`;
+
+                    row.appendChild(cell);
+                }
+                container.appendChild(row);
+            }
+        }
+
+        // Event-Listener für den "Treppe bauen" Button
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            const heightInput = document.getElementById('heightInput');
+            const height = parseInt(heightInput.value);
+            createStaircase(height);
+        });
+
+        // Die Treppe beim ersten Laden der Seite erstellen
+        window.addEventListener('load', () => {
+            const heightInput = document.getElementById('heightInput');
+            createStaircase(parseInt(heightInput.value));
+        });
+    </script>
+</body>
+</html>
