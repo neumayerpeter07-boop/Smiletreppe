@@ -1,1 +1,211 @@
 <!DOCTYPE html>
+
+<html lang="de">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Emoji-Treppe</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+
+        body {
+
+            font-family: 'Inter', sans-serif;
+
+            background-color: #1a202c;
+
+        }
+
+    </style>
+
+</head>
+
+<body class="flex items-center justify-center min-h-screen text-gray-200 p-4">
+
+
+
+    <div class="bg-gray-800 p-8 rounded-xl shadow-lg w-full max-w-lg">
+
+        <h1 class="text-3xl font-bold text-center mb-6 text-gray-100">Emoji-Treppe</h1>
+
+        
+
+        <div class="mb-6">
+
+            <label for="heightInput" class="block text-gray-400 mb-2">Treppenhöhe (1-99):</label>
+
+            <input type="number" id="heightInput" min="1" max="99" value="10" 
+
+                   class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-gray-200 
+
+                          focus:outline-none focus:border-blue-500 transition duration-300">
+
+        </div>
+
+
+
+        <button id="generateBtn" 
+
+                class="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold 
+
+                       hover:bg-blue-700 transition duration-300 transform 
+
+                       hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+
+            Treppe bauen
+
+        </button>
+
+
+
+        <div id="staircase-container" class="mt-8 overflow-auto max-h-[70vh]">
+
+            <!-- Treppe wird hier gerendert -->
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <script>
+
+        // Funktion zum Erstellen der Emoji-Treppe
+
+        function createStaircase(height) {
+
+            const container = document.getElementById('staircase-container');
+
+            container.innerHTML = ''; // Vorherige Treppe löschen
+
+            
+
+            if (height < 1 || height > 99) {
+
+                container.innerHTML = `<p class="text-red-400 text-center">Bitte gib eine Zahl zwischen 1 und 99 ein.</p>`;
+
+                return;
+
+            }
+
+            
+
+            // Emojis für den Pfad, die abwechseln sollen
+
+            const pathEmojis = ['🙃', '🙂'];
+
+
+
+            // Schleife für die Treppe, die von unten nach oben wächst
+
+            for (let i = 1; i <= height; i++) {
+
+                const row = document.createElement('div');
+
+                row.className = 'flex items-center justify-start';
+
+
+
+                // Füllt die Zeile mit der korrekten Anzahl an Emojis
+
+                for (let j = 1; j <= i; j++) {
+
+                    let currentEmoji;
+
+
+
+                    // Bestimmt das Emoji basierend auf der Position
+
+                    if (j === i) { // Es ist das Emoji auf dem eigentlichen Treppenpfad
+
+                        if (i === height) {
+
+                            currentEmoji = '🤕'; // Die oberste Stufe
+
+                        } else if (i === 1) {
+
+                            currentEmoji = '🙂'; // Die unterste Stufe
+
+                        } else {
+
+                            // Abwechselndes Emoji für die Stufen dazwischen
+
+                            const emojiIndex = (i - 2) % pathEmojis.length;
+
+                            currentEmoji = pathEmojis[emojiIndex];
+
+                        }
+
+                    } else { // Es ist ein Fundament-Emoji
+
+                        currentEmoji = '2️⃣';
+
+                    }
+
+
+
+                    const cell = document.createElement('div');
+
+                    cell.className = 'w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-2xl md:text-3xl rounded-md transition duration-300 transform';
+
+                    cell.textContent = currentEmoji;
+
+
+
+                    // Zufällige Drehung für einen spielerischen Effekt
+
+                    const rotation = (Math.random() - 0.5) * 20;
+
+                    cell.style.transform = `rotate(${rotation}deg)`;
+
+
+
+                    row.appendChild(cell);
+
+                }
+
+                container.appendChild(row);
+
+            }
+
+        }
+
+
+
+        // Event-Listener für den "Treppe bauen" Button
+
+        document.getElementById('generateBtn').addEventListener('click', () => {
+
+            const heightInput = document.getElementById('heightInput');
+
+            const height = parseInt(heightInput.value);
+
+            createStaircase(height);
+
+        });
+
+
+
+        // Die Treppe beim ersten Laden der Seite erstellen
+
+        window.addEventListener('load', () => {
+
+            const heightInput = document.getElementById('heightInput');
+
+            createStaircase(parseInt(heightInput.value));
+
+        });
+
+    </script>
+
+</body>
+
+</html>
